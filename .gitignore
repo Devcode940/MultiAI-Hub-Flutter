@@ -1,0 +1,70 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code related
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/android/Flutter/
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/generated_pluginregistrant.*
+**/android/local.properties
+**/android/app/local.properties
+*.lock
+!pubspec.lock
+
+# Build
+build/
+.fvm/
+.packages
+.pub-cache/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Coverage
+coverage/
+lcov.info
+
+# Keys (NEVER commit these!)
+android/app/keystore/
+android/key.properties
+*.jks
+*.keystore
+*.p12
+
+# Firebase (keep config, remove secrets)
+firebase-functions/
+.firebase/
+
+# Environment
+.env
+.env.*
+
+# Generated files
+*.g.dart
+*.freezed.dart

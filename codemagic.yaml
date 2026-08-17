@@ -1,0 +1,62 @@
+# Codemagic CI/CD configuration
+# Deploy to Play Store + App Store from the cloud
+# Sign up at https://codemagic.io
+
+workflows:
+  android:
+    name: Android Play Store
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      android_signing:
+        keystore_reference: YOUR_KEYSTORE_REFERENCE  # Upload in Codemagic UI
+      flutter: stable
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Run tests
+        script: flutter test
+      - name: Build AAB
+        script: flutter build appbundle --release
+    artifacts:
+      - build/**/outputs/**/*.aab
+    publishing:
+      google_play:
+        track: production
+        submit_as_draft: true  # Change to false when ready
+
+  ios:
+    name: iOS App Store
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.multaihub.app
+      flutter: stable
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Run tests
+        script: flutter test
+      - name: Build iOS
+        script: flutter build ipa --release
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        submit_to_testflight: true
+
+  web:
+    name: Web Build
+    max_build_duration: 30
+    instance_type: linux
+    environment:
+      flutter: stable
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Build Web
+        script: flutter build web --release
+    artifacts:
+      - build/web/**/*
