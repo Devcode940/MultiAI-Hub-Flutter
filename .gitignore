@@ -1,70 +1,48 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-migrate_working_dir/
+```
+# Build and intermediate files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# VS Code related
-.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/
-**/ios/Pods/
-**/ios/.symlinks/
-**/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/ephemeral/
-**/ios/Runner/GeneratedPluginRegistrant.*
-**/android/Flutter/
-**/android/app/debug
-**/android/app/profile
-**/android/app/release
-**/android/generated_pluginregistrant.*
-**/android/local.properties
-**/android/app/local.properties
-*.lock
-!pubspec.lock
-
-# Build
-build/
-.fvm/
+# Flutter/Dart specific
+.dart_tool/
 .packages
-.pub-cache/
 .pub/
-.flutter-plugins
-.flutter-plugins-dependencies
+build/
+ios/.symlinks
+flutter/ephemeral
+**/ios/Flutter/.last_build_id
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+*.env.*
 
 # Coverage
 coverage/
-lcov.info
+*.coverage
 
-# Keys (NEVER commit these!)
-android/app/keystore/
-android/key.properties
-*.jks
-*.keystore
-*.p12
+# Distribution / packaging
+*.tar.gz
+*.zip
 
-# Firebase (keep config, remove secrets)
-firebase-functions/
-.firebase/
+# macOS
+.DS_Store
 
-# Environment
-.env
-.env.*
-
-# Generated files
-*.g.dart
-*.freezed.dart
+# Windows
+Thumbs.db
+```

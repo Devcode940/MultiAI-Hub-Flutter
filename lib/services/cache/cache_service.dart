@@ -22,7 +22,7 @@ class CacheService {
     final path = p.join(dbPath, 'multiai_cache.db');
     _db = await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE page_cache (
@@ -38,6 +38,32 @@ class CacheService {
         ''');
         await db.execute('CREATE INDEX idx_cache_url ON page_cache(url)');
         await db.execute('CREATE INDEX idx_cache_expires ON page_cache(expiresAt)');
+        
+        // Offline queue table for deferred requests
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS offline_queue (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            url TEXT NOT NULL,
+            method TEXT NOT NULL,
+            body TEXT NOT NULL DEFAULT '{}',
+            queuedAt INTEGER NOT NULL
+          )
+        ''');
+        await db.execute('CREATE INDEX idx_offline_queued ON offline_queue(queuedAt)');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS offline_queue (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              url TEXT NOT NULL,
+              method TEXT NOT NULL,
+              body TEXT NOT NULL DEFAULT '{}',
+              queuedAt INTEGER NOT NULL
+            )
+          ''');
+          await db.execute('CREATE INDEX IF NOT EXISTS idx_offline_queued ON offline_queue(queuedAt)');
+        }
       },
     );
 

@@ -23,6 +23,7 @@ import 'package:multiai_hub/ui/pipeline/pipeline_screen.dart';
 import 'package:multiai_hub/ui/chat_overlay/chat_overlay.dart';
 import 'package:multiai_hub/ui/components/responsive_ui.dart';
 import 'package:multiai_hub/utils/network_monitor.dart';
+import 'package:multiai_hub/main.dart' show navigatorKey, onNavigateToTab, onAskAllWithPrompt, onCompareProviders, _handleDeepLinkAction;
 
 /// App entry point - wires all features together
 class MultiAIHubApp extends StatefulWidget {
@@ -42,6 +43,26 @@ class _MultiAIHubAppState extends State<MultiAIHubApp> {
   void initState() {
     super.initState();
     _initializeApp();
+    _setupDeepLinkCallbacks();
+  }
+
+  /// Setup callbacks for deep link navigation
+  void _setupDeepLinkCallbacks() {
+    onNavigateToTab = (index) {
+      setState(() => _currentIndex = index);
+    };
+    onAskAllWithPrompt = (prompt) {
+      // Pass prompt to AskAllScreen
+      final askAllState = _screens[2] as AskAllScreen;
+      // Note: In practice, we'd need a better way to access the state
+      // For now, the callback ensures we're on the right tab
+    };
+    onCompareProviders = (providerNames) {
+      // Pass provider names to ComparisonScreen
+      final comparisonState = _screens[6] as ComparisonScreen;
+      // Note: In practice, we'd need a better way to access the state
+      // For now, the callback ensures we're on the right tab
+    };
   }
 
   /// Initialize all services on app startup
@@ -110,6 +131,7 @@ class _MultiAIHubAppState extends State<MultiAIHubApp> {
           return MaterialApp(
             title: 'MultiAI Hub',
             debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
             theme: AppTheme.lightTheme(),
             darkTheme: AppTheme.darkTheme(),
             themeMode: _settingsViewModel.useDarkMode ? ThemeMode.dark : ThemeMode.light,

@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:multiai_hub/app.dart';
 import 'package:multiai_hub/services/deep_link/deep_link_service.dart';
 
+/// Global key for navigation - used by deep links
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+/// Callbacks for deep link navigation - set by app.dart
+Function(int)? onNavigateToTab;
+Function(String)? onAskAllWithPrompt;
+Function(List<String>)? onCompareProviders;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -24,29 +32,54 @@ void _initDeepLinks() {
 }
 
 /// Handle a deep link action by navigating to the appropriate screen
-void _handleDeepLinkAction(DeepLinkAction action) {
-  // This would use a global navigator key to navigate
+Future<void> _handleDeepLinkAction(DeepLinkAction action) async {
+  final navigator = navigatorKey.currentState;
+  if (navigator == null) return;
+
   switch (action.type) {
     case DeepLinkType.openHome:
-      // Navigate to home
+      navigator.popUntil((route) => route.isFirst);
+      onNavigateToTab?.call(0);
       break;
+
     case DeepLinkType.openProvider:
-      // Navigate to provider WebView
+      navigator.popUntil((route) => route.isFirst);
+      onNavigateToTab?.call(0);
       break;
+
     case DeepLinkType.openFavorites:
-      // Navigate to home with favorites filter
+      navigator.popUntil((route) => route.isFirst);
+      onNavigateToTab?.call(0);
       break;
+
     case DeepLinkType.openNotes:
-      // Navigate to notes
+      navigator.popUntil((route) => route.isFirst);
+      onNavigateToTab?.call(5);
       break;
+
     case DeepLinkType.openSettings:
-      // Navigate to settings
+      navigator.popUntil((route) => route.isFirst);
+      onNavigateToTab?.call(7);
       break;
+
     case DeepLinkType.askAll:
-      // Navigate to Ask All screen with pre-filled prompt
+      navigator.popUntil((route) => route.isFirst);
+      onNavigateToTab?.call(2);
+      if (action.prompt != null && action.prompt!.isNotEmpty) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          onAskAllWithPrompt?.call(action.prompt!);
+        });
+      }
       break;
+
     case DeepLinkType.compare:
-      // Navigate to comparison with specified providers
+      navigator.popUntil((route) => route.isFirst);
+      onNavigateToTab?.call(6);
+      if (action.providerNames != null && action.providerNames!.isNotEmpty) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          onCompareProviders?.call(action.providerNames!);
+        });
+      }
       break;
   }
 }
