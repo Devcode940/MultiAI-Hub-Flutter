@@ -17,12 +17,45 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
   AiProvider? _rightProvider;
   final _leftWebView = WebViewViewModel();
   final _rightWebView = WebViewViewModel();
+  List<String>? _deepLinkProviders;
 
   @override
-  void dispose() {
-    _leftWebView.dispose();
-    _rightWebView.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    // Handle deep link providers after build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_deepLinkProviders != null && _deepLinkProviders!.length >= 2) {
+        _selectProvidersFromDeepLink(_deepLinkProviders!);
+      }
+    });
+  }
+
+  /// Set providers from deep link
+  void setProvidersFromDeepLink(List<String> providerNames) {
+    setState(() {
+      _deepLinkProviders = providerNames;
+    });
+  }
+
+  /// Select providers by name from deep link
+  void _selectProvidersFromDeepLink(List<String> names) {
+    final providers = context.read<HomeViewModel>().providers;
+    AiProvider? left;
+    AiProvider? right;
+    
+    for (final p in providers) {
+      if (p.name == names[0]) left = p;
+      if (names.length > 1 && p.name == names[1]) right = p;
+    }
+    
+    if (left != null) {
+      setState(() => _leftProvider = left);
+      _leftWebView.initialize(left.url);
+    }
+    if (right != null) {
+      setState(() => _rightProvider = right);
+      _rightWebView.initialize(right.url);
+    }
   }
 
   @override

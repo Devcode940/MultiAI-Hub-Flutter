@@ -18,11 +18,28 @@ class _AskAllScreenState extends State<AskAllScreen> with TickerProviderStateMix
   final AskAllViewModel _askAllVM = AskAllViewModel();
   final TextEditingController _promptController = TextEditingController();
   late TabController _tabController;
+  String? _deepLinkPrompt;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    // Listen for deep link prompts
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_deepLinkPrompt != null && _deepLinkPrompt!.isNotEmpty) {
+        _promptController.text = _deepLinkPrompt!;
+        _askAllVM.updatePrompt(_deepLinkPrompt!);
+      }
+    });
+  }
+
+  /// Set prompt from deep link
+  void setPromptFromDeepLink(String prompt) {
+    setState(() {
+      _deepLinkPrompt = prompt;
+      _promptController.text = prompt;
+      _askAllVM.updatePrompt(prompt);
+    });
   }
 
   @override

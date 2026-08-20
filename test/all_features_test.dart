@@ -35,7 +35,7 @@ void main() {
       );
       final map = provider.toMap();
       final restored = AiProvider.fromMap(map);
-      expect(restored.name, 'ChatGPT'); // Will fail intentionally - test name
+      expect(restored.name, provider.name);
       expect(restored.url, provider.url);
       expect(restored.category, provider.category);
     });
