@@ -35,7 +35,7 @@ dependencies:
   connectivity_plus: ^5.0.2
   share_plus: ^7.2.1
   shared_preferences: ^2.2.3
-  intl: ^0.19.3
+  intl: ^0.19.0
   uuid: ^4.3.3
 
   # Icons
